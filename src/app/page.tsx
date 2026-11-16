@@ -1,40 +1,50 @@
 import React from 'react';
 import Navbar from '@/components/Navbar';
-import HeroSection from '@/components/HeroSection';
-import LearningStreamsSection from '@/components/LearningStreamsSection';
-import MiddleSchoolSignificanceSection from '@/components/MiddleSchoolSignificanceSection';
-import CurriculumOverviewSection from '@/components/CurriculumOverviewSection';
-import WeeklyCadenceSection from '@/components/WeeklyCadenceSection';
-import PackagesSection from '@/components/PackagesSection';
-import ProgressSection from '@/components/ProgressSection';
-import ClosingCTA from '@/components/ClosingCTA';
 import Footer from '@/components/Footer';
-import { getAllSettings, getAllPackages } from '@/lib/db';
-
-export const revalidate = 60; // Cache at edge CDN for sub-50ms instant load; revalidates every 60s in background!
+import HeroSection from '@/components/tutorastra/HeroSection';
+import AfterHero from '@/components/tutorastra/AfterHero';
+import WhySection from '@/components/tutorastra/WhySection';
+import SubjectsSection from '@/components/tutorastra/SubjectsSection';
+import HowItWorks from '@/components/tutorastra/HowItWorks';
+import ConsultationSection from '@/components/tutorastra/ConsultationSection';
+import AiTutorSection from '@/components/tutorastra/AiTutorSection';
+import FaqSection from '@/components/tutorastra/FaqSection';
+import JourneySection from '@/components/tutorastra/JourneySection';
+import { BeforeTutorSection, BetweenSection, ConfirmedLaterSection, GradesSection, LessonSection, ParentsSection } from '@/components/tutorastra/InfoSections';
+import ScrollToSection from '@/components/tutorastra/ScrollToSection';
+import DemoPopup from '@/components/tutorastra/DemoPopup';
 
 export default function HomePage() {
-  const settings = getAllSettings();
-  const packages = getAllPackages();
-
-  const announcementText = settings['announcement_text'] || '🚀 Spring Term Enrolment Open! Book your free 1-on-1 trial class today.';
-  const isAnnouncementActive = settings['announcement_banner_active'] !== 'false';
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'EducationalOrganization',
+    name: 'TutorAstra',
+    slogan: 'Your Ambition. Our Mission.',
+    description: 'Personalised one-to-one learning with dedicated tutors and study plans shaped around each student.',
+  };
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <Navbar
-        announcementText={announcementText}
-        isAnnouncementActive={isAnnouncementActive}
-      />
+    <div className="flex min-h-screen flex-col">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <Navbar />
+      <ScrollToSection />
+      <DemoPopup />
       <main className="flex-grow">
         <HeroSection />
-        <LearningStreamsSection />
-        <MiddleSchoolSignificanceSection />
-        <CurriculumOverviewSection />
-        <WeeklyCadenceSection />
-        <PackagesSection initialPackages={packages as any} />
-        <ProgressSection />
-        <ClosingCTA />
+        <AfterHero />
+        <SubjectsSection />
+        <GradesSection />
+        <HowItWorks />
+        <LessonSection />
+        <BetweenSection />
+        <WhySection />
+        <ParentsSection />
+        <BeforeTutorSection />
+        <AiTutorSection />
+        <JourneySection />
+        <ConfirmedLaterSection />
+        <FaqSection />
+        <ConsultationSection />
       </main>
       <Footer />
     </div>

@@ -25,8 +25,8 @@ export default function ScrollAnimations() {
     // Respect user's accessibility motion settings
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     if (mediaQuery.matches) {
-      document.querySelectorAll('.scroll-reveal, .scroll-stagger-item').forEach((el) => {
-        el.classList.add('is-revealed');
+      document.querySelectorAll('.scroll-reveal, .scroll-stagger-item, [data-reveal], .ta-rule, .ta-sweep-row').forEach((el) => {
+        el.classList.add('is-revealed', 'is-drawn');
       });
       return;
     }
@@ -36,7 +36,7 @@ export default function ScrollAnimations() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('is-revealed');
+            entry.target.classList.add('is-revealed', 'is-drawn');
             observer.unobserve(entry.target);
           }
         });
@@ -48,44 +48,8 @@ export default function ScrollAnimations() {
       }
     );
 
-    // 1. Tag and observe Section Headings & Lead Paragraphs
-    const headings = document.querySelectorAll<HTMLElement>(
-      'main section h2, main section h3, [data-scroll-reveal]'
-    );
-    headings.forEach((heading) => {
-      if (heading.closest('.grid')) return; // cards handle their own heading
-      heading.classList.add('scroll-reveal');
-      observer.observe(heading);
-    });
-
-    const leadParagraphs = document.querySelectorAll<HTMLElement>(
-      'main section .text-center > p, main section header p'
-    );
-    leadParagraphs.forEach((p) => {
-      p.classList.add('scroll-reveal');
-      observer.observe(p);
-    });
-
-    // 2. Tag and observe Cards in Grids for Staggered Reveal
-    const grids = document.querySelectorAll<HTMLElement>(
-      'main section .grid, [data-scroll-stagger]'
-    );
-
-    grids.forEach((grid) => {
-      if (grid.closest('nav') || grid.closest('#advisor-chat')) return;
-
-      const cards = Array.from(grid.children).filter(
-        (child): child is HTMLElement => child instanceof HTMLElement
-      );
-
-      // Apply staggered indexing to multi-card collections (2 to 12 items)
-      if (cards.length >= 2 && cards.length <= 12) {
-        cards.forEach((card, idx) => {
-          card.classList.add('scroll-stagger-item');
-          card.style.setProperty('--stagger-idx', String(Math.min(idx, 6)));
-          observer.observe(card);
-        });
-      }
+    document.querySelectorAll<HTMLElement>('.scroll-reveal, [data-reveal], .ta-rule, .ta-sweep-row').forEach((element) => {
+      observer.observe(element);
     });
 
     return () => {

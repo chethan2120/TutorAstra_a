@@ -7,7 +7,7 @@ import { ALL_CURRICULA } from '@/lib/curriculumData';
 import { Bot, Sparkles, BookOpen, Clock, FileText, Check, ArrowRight, ShieldCheck } from 'lucide-react';
 
 export const metadata = {
-  title: 'AI for Students | Grades 6–8 | EdNxt',
+  title: 'AI for Students | TutorAstra',
   description: 'Future-ready AI skills: Prompt engineering, Gemini Notebooks for research, automated presentations, ethics and capstone projects for middle schoolers.',
 };
 

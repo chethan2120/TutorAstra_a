@@ -7,7 +7,7 @@ import { ALL_CURRICULA, ACADEMIC_FRAMEWORK } from '@/lib/curriculumData';
 import { Check, ArrowRight, Sparkles, BookOpen, Clock, Calendar, AlertCircle } from 'lucide-react';
 
 export const metadata = {
-  title: 'Science Mastery | Grades 6–8 & British Years 7–9 | EdNxt',
+  title: 'Science | TutorAstra',
   description: 'In-depth Biology, Chemistry, and Physics tuition aligned with CBSE (NCERT) and British KS3. Two live classes weekly + doubt support.',
 };
 

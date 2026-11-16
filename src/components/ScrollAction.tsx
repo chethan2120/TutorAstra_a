@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
-import { ArrowUp, Sparkles } from 'lucide-react';
+import { ArrowUp } from 'lucide-react';
+import ParentGuide from '@/components/tutorastra/ParentGuide';
 
-export default function ScrollAction() {
+export default function ScrollAction({ whatsappNumber = '' }: { whatsappNumber?: string }) {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const progressBarRef = useRef<HTMLDivElement>(null);
   const showScrollTopRef = useRef(false);
@@ -45,51 +45,52 @@ export default function ScrollAction() {
     });
   };
 
+  const digits = whatsappNumber.replace(/\D/g, '');
+  const whatsappHref = digits
+    ? `https://wa.me/${digits}?text=${encodeURIComponent('Hello TutorAstra, I would like to register for a consultation.')}`
+    : '/#consultation';
+
   return (
     <>
-      {/* 1. Top Reading Scroll Progress Bar - High-performance GPU scaleX transform, 0 reflows */}
       <div
-        className="fixed top-0 left-0 right-0 h-1 z-50 pointer-events-none bg-slate-200/20"
+        className="pointer-events-none fixed left-0 right-0 top-0 z-50 h-1 bg-transparent"
         style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50 }}
       >
         <div
           ref={progressBarRef}
-          className="h-full w-full bg-gradient-to-r from-brand-blue via-brand-lime to-brand-blue origin-left will-change-transform"
+          className="h-full w-full origin-left bg-[#F4CC45] will-change-transform"
           style={{ transform: 'scaleX(0)' }}
         />
       </div>
 
-      {/* 2. Floating Action Controls (Appears on Scroll) */}
       <div
-        className={`fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3 transition-all duration-300 ${
-          showScrollTop
-            ? 'opacity-100 translate-y-0 pointer-events-auto'
-            : 'opacity-0 translate-y-6 pointer-events-none'
-        }`}
-        style={{ position: 'fixed', bottom: '1.5rem', right: '1.5rem', zIndex: 40 }}
+        className="fixed bottom-5 right-4 z-40 flex flex-col items-end gap-3 sm:right-6"
+        style={{ position: 'fixed', bottom: '1.25rem', right: '1rem', zIndex: 40 }}
       >
-        {/* Floating Fast Trial Pill */}
-        <Link
-          href="/free-trial"
-          className="hidden sm:inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-navy text-white text-xs font-bold shadow-card-hover hover:bg-navy-dark hover:scale-105 border border-white/20 transition-all duration-200 group"
-          title="Book your 1-on-1 free trial session"
-        >
-          <Sparkles className="w-3.5 h-3.5 text-brand-lime group-hover:rotate-12 transition-transform" />
-          <span>Book Free Trial</span>
-          <span className="text-[10px] bg-brand-blue text-white px-2 py-0.5 rounded-full font-semibold">
-            1-on-1
-          </span>
-        </Link>
+        {showScrollTop && (
+          <button
+            type="button"
+            onClick={scrollToTop}
+            aria-label="Scroll back to top"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-[#E9E1F1] bg-white text-[#310064] shadow-lg"
+          >
+            <ArrowUp className="h-5 w-5" />
+          </button>
+        )}
 
-        {/* Back To Top Button */}
-        <button
-          type="button"
-          onClick={scrollToTop}
-          aria-label="Scroll back to top"
-          className="w-11 h-11 rounded-full bg-white text-navy border border-slate-200/90 shadow-card-hover hover:bg-navy hover:text-white hover:border-navy flex items-center justify-center transition-all duration-200 hover:-translate-y-1 group"
+        <ParentGuide />
+
+        <a
+          href={whatsappHref}
+          target={digits ? '_blank' : undefined}
+          rel={digits ? 'noopener noreferrer' : undefined}
+          aria-label="Chat with TutorAstra on WhatsApp"
+          className="flex h-12 w-12 items-center justify-center rounded-full bg-[#1f8f4e] text-white shadow-lg transition hover:-translate-y-0.5"
         >
-          <ArrowUp className="w-5 h-5 group-hover:-translate-y-0.5 transition-transform" />
-        </button>
+          <svg viewBox="0 0 24 24" className="h-6 w-6" fill="currentColor" aria-hidden="true">
+            <path d="M12.04 3.2A8.7 8.7 0 0 0 3.4 11.8c0 1.53.4 3.02 1.16 4.33L3.2 20.8l4.8-1.26a8.8 8.8 0 0 0 4.04.98 8.7 8.7 0 0 0 0-17.32Zm0 15.9a7.2 7.2 0 0 1-3.66-.99l-.26-.16-2.85.75.76-2.78-.17-.28a7.15 7.15 0 1 1 6.18 3.46Zm3.93-5.35c-.21-.1-1.27-.62-1.46-.7-.2-.07-.34-.1-.48.11-.14.2-.55.69-.67.83-.12.14-.25.16-.46.05-.21-.1-.9-.33-1.71-1.05-.63-.56-1.06-1.26-1.18-1.47-.12-.21-.01-.33.09-.43.1-.1.21-.25.32-.37.1-.12.14-.21.21-.35.07-.14.04-.27-.02-.37-.05-.1-.48-1.16-.66-1.59-.17-.42-.35-.36-.48-.36h-.41c-.14 0-.37.05-.56.27-.2.21-.74.72-.74 1.76s.76 2.04.86 2.18c.1.14 1.49 2.28 3.62 3.2.5.22.9.35 1.2.45.51.16.97.14 1.33.08.41-.06 1.27-.52 1.45-1.02.18-.5.18-.93.12-1.02-.05-.1-.2-.16-.41-.27Z" />
+          </svg>
+        </a>
       </div>
     </>
   );

@@ -10,13 +10,13 @@ module.exports = {
     extend: {
       colors: {
         navy: {
-          DEFAULT: '#102B50',
-          dark: '#0B2142',
-          light: '#1e3a63',
-          muted: '#2a4365',
+          DEFAULT: '#310064',
+          dark: '#240047',
+          light: '#6527B8',
+          muted: '#746B80',
         },
         brand: {
-          blue: '#2563EB',
+          blue: '#6527B8',
           'blue-light': '#3B82F6',
           'blue-dark': '#1D4ED8',
           lime: '#B4E94E',
@@ -31,9 +31,17 @@ module.exports = {
           yellow: '#FEF9C3',
         },
         edbg: '#F8FAFF',
+        ta: {
+          purple: '#310064',
+          violet: '#6527B8',
+          gold: '#F4CC45',
+          ink: '#241536',
+          lavender: '#F0E9FA',
+        },
       },
       fontFamily: {
-        sans: ['var(--font-plus-jakarta)', 'Inter', 'system-ui', 'sans-serif'],
+        sans: ['Lato', 'system-ui', 'sans-serif'],
+        display: ['Poppins', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
         soft: '0 4px 20px -2px rgba(16, 43, 80, 0.06), 0 2px 6px -1px rgba(16, 43, 80, 0.04)',

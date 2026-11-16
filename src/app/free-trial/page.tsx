@@ -5,7 +5,7 @@ import FreeTrialForm from '@/components/FreeTrialForm';
 import { Sparkles, CheckCircle, ShieldCheck, Clock, Award } from 'lucide-react';
 
 export const metadata = {
-  title: 'Book a Free Trial Class | EdNxt Academy',
+  title: 'Book a Free Consultation | TutorAstra',
   description: 'Experience an interactive 1-on-1 trial class in Science, Maths, AI, or Public Speaking. Zero obligation, diagnostic baseline included.',
 };
 

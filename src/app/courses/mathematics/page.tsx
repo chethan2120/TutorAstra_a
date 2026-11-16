@@ -7,7 +7,7 @@ import { ALL_CURRICULA, ACADEMIC_FRAMEWORK } from '@/lib/curriculumData';
 import { Check, ArrowRight, Calculator, Clock, Calendar, AlertCircle, Compass } from 'lucide-react';
 
 export const metadata = {
-  title: 'Mathematics Problem Solving | Grades 6–8 & British Years 7–9 | EdNxt',
+  title: 'Mathematics | TutorAstra',
   description: 'Master arithmetic, algebra, geometry, and data handling. Two live classes weekly + doubt clearing. Aligned with CBSE and British KS3.',
 };
 

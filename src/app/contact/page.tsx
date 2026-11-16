@@ -5,7 +5,7 @@ import ContactForm from '@/components/ContactForm';
 import { Mail, Phone, MapPin, Clock, MessageSquare, Send } from 'lucide-react';
 
 export const metadata = {
-  title: 'Contact Us | EdNxt Academy Admissions',
+  title: 'Contact Us | TutorAstra',
   description: 'Reach our admissions team in Dubai, UAE. Inquire about CBSE and British KS3 learning streams, term enrolment, or customised timetables.',
 };
 
@@ -24,8 +24,8 @@ export default function ContactPage() {
                   Direct Admissions Support
                 </div>
 
-                <h1 className="text-3xl sm:text-4xl font-black text-navy leading-tight tracking-tight">
-                  Get in Touch with <span className="highlight-lime">Our Team</span>
+                <h1 className="text-3xl sm:text-4xl font-extrabold text-[#310064] leading-tight tracking-tight">
+                  Get in Touch with <span className="highlight-lime">TutorAstra</span>
                 </h1>
 
                 <p className="text-sm sm:text-base text-slate-600 leading-relaxed">

@@ -67,7 +67,7 @@ export default function LoginPage() {
     <div className="flex flex-col min-h-screen">
       <Navbar />
 
-      <main className="flex-grow py-16 bg-gradient-to-b from-white via-soft-blue/20 to-edbg">
+      <main className="flex-grow bg-[#FAF8FF] py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           {studentView ? (
             /* Student & Parent Portal Active Session */
@@ -139,7 +139,7 @@ export default function LoginPage() {
                 <div className="w-12 h-12 rounded-2xl bg-soft-blue text-brand-blue flex items-center justify-center mx-auto mb-3">
                   <User className="w-6 h-6" />
                 </div>
-                <h1 className="text-2xl font-black text-navy">Login</h1>
+                <h1 className="text-2xl font-black text-[#310064]">Login</h1>
                 <p className="text-xs text-slate-500">
                   Sign in to access your administrative dashboard or student learning portal.
                 </p>
@@ -188,17 +188,17 @@ export default function LoginPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3.5 rounded-xl font-bold text-sm bg-navy text-white hover:bg-navy-dark shadow-soft transition-all flex items-center justify-center gap-2 disabled:opacity-70"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#310064] py-3.5 text-sm font-bold text-white shadow-soft transition-all hover:bg-[#6527B8] disabled:opacity-70"
                 >
                   {loading ? (
                     <>
-                      <Loader2 className="w-4 h-4 animate-spin text-brand-lime" />
+                      <Loader2 className="h-4 w-4 animate-spin text-[#F4CC45]" />
                       <span>Authenticating...</span>
                     </>
                   ) : (
                     <>
                       <span>Sign In</span>
-                      <ArrowRight className="w-4 h-4 text-brand-lime" />
+                      <ArrowRight className="h-4 w-4 text-[#F4CC45]" />
                     </>
                   )}
                 </button>

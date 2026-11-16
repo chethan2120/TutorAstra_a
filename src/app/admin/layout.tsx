@@ -3,8 +3,8 @@ import { AdminTopBar, AdminSidebar } from '@/components/AdminNav';
 import { getCurrentSession } from '@/lib/auth';
 
 export const metadata = {
-  title: 'EdNxt Management Console | EdNxt Academy',
-  description: 'EdNxt Academy operations, academic streams, and educational programmes dashboard.',
+  title: { absolute: 'TutorAstra Management Console' },
+  description: 'TutorAstra operations, enquiries and learning programmes.',
 };
 
 export default function AdminLayout({

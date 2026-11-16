@@ -50,15 +50,18 @@ export function AdminTopBar({ userEmail = 'admin@gmail.com', userName = 'Super A
 
   return (
     <header className="sticky top-0 z-40 bg-white border-b border-[#F0ECEE] px-4 sm:px-6 py-2.5 flex items-center justify-between gap-4 shadow-xs">
-      {/* Left: EDNXT Medallion Badge & Title */}
-      <div className="flex items-center gap-3 shrink-0">
+      <div className="flex shrink-0 items-center gap-3">
         <Link href="/admin/dashboard" className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-full bg-navy flex items-center justify-center text-white shadow-xs">
-            <Award className="w-5 h-5 text-brand-lime" />
-          </div>
+          <img
+            src="/tutorastra-logo.jpg"
+            alt="TutorAstra"
+            width={36}
+            height={36}
+            className="h-9 w-9 rounded-full object-cover ring-2 ring-[#F4CC45]"
+          />
           <div className="hidden sm:block">
-            <span className="text-sm font-black tracking-tight text-navy">EDNXT</span>
-            <span className="text-xs font-semibold text-slate-500 ml-1.5 hidden md:inline">Management Console</span>
+            <span className="text-sm font-black tracking-tight text-[#310064]">TutorAstra</span>
+            <span className="ml-1.5 hidden text-xs font-semibold text-slate-500 md:inline">Management Console</span>
           </div>
         </Link>
       </div>
@@ -72,7 +75,7 @@ export function AdminTopBar({ userEmail = 'admin@gmail.com', userName = 'Super A
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search records, courses, applications, students..."
-            className="w-full pl-9 pr-4 py-2 rounded-full border border-slate-200 bg-white text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-[#102B50]/40 focus:border-[#102B50]"
+            className="w-full rounded-full border border-slate-200 bg-white py-2 pl-9 pr-4 text-xs text-slate-800 placeholder:text-slate-400 focus:border-[#310064] focus:outline-none focus:ring-1 focus:ring-[#310064]/40"
           />
         </div>
       </div>
@@ -88,7 +91,7 @@ export function AdminTopBar({ userEmail = 'admin@gmail.com', userName = 'Super A
           <button
             type="button"
             onClick={() => setShowProfileMenu(!showProfileMenu)}
-            className="w-8 h-8 rounded-full bg-[#102B50] text-white flex items-center justify-center text-xs font-bold shadow-xs hover:opacity-90"
+            className="flex h-8 w-8 items-center justify-center rounded-full bg-[#310064] text-xs font-bold text-white shadow-xs hover:opacity-90"
             title={`${userName} (${userEmail})`}
           >
             {initials}
@@ -155,14 +158,23 @@ export function AdminSidebar({ userEmail = 'admin@gmail.com', userName = 'Super 
   };
 
   return (
-    <aside className="w-full lg:w-64 bg-white text-slate-700 border-r border-[#F0ECEE] flex-shrink-0 flex flex-col justify-between p-3 z-30 overflow-y-auto">
+    <aside className="z-30 flex w-full flex-shrink-0 flex-col justify-between overflow-y-auto border-r border-[#F0ECEE] bg-white p-3 text-slate-700 lg:w-64">
       <div className="space-y-4">
-        {/* Overview Pill (Active Burgundy) */}
+        <Link href="/admin/dashboard" className="mb-1 flex items-center gap-2.5 px-2">
+          <img
+            src="/tutorastra-logo.jpg"
+            alt=""
+            width={36}
+            height={36}
+            className="h-9 w-9 rounded-full object-cover ring-2 ring-[#F4CC45]"
+          />
+          <span className="text-sm font-bold tracking-tight text-[#310064]">TutorAstra</span>
+        </Link>
         <Link
           href="/admin/dashboard"
           className={`w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl font-bold text-xs transition-colors ${
             pathname === '/admin/dashboard'
-              ? 'bg-[#102B50] text-white shadow-xs'
+              ? 'bg-[#310064] text-white shadow-xs'
               : 'text-slate-700 hover:bg-slate-100'
           }`}
         >

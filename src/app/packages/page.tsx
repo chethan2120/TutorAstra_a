@@ -7,7 +7,7 @@ import { getAllPackages } from '@/lib/db';
 import { HelpCircle, ShieldCheck, Check } from 'lucide-react';
 
 export const metadata = {
-  title: 'Course Packages & Tuition | EdNxt Academy',
+  title: 'Learning with TutorAstra',
   description: 'Transparent middle school tuition bundles: Core Bundle (Science + Maths), Future-Skills Bundle (AI + Speech), and Full Bundle (All 4 Streams). AED 2,999/term.',
 };
 

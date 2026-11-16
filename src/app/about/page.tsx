@@ -7,8 +7,8 @@ import Link from 'next/link';
 import { Target, Heart, Sparkles, BookOpen, CheckCircle, ShieldCheck, ArrowRight, Award } from 'lucide-react';
 
 export const metadata = {
-  title: 'About Us | EdNxt Academy',
-  description: 'Learn about EdNxt’s vision for middle-school education (Grades 6–8): Academic rigor in Science & Maths paired with future-ready AI and Public Speaking.',
+  title: 'About Us | TutorAstra',
+  description: 'TutorAstra offers personalised one-to-one learning. Your Ambition. Our Mission.',
 };
 
 export default function AboutPage() {
@@ -23,11 +23,11 @@ export default function AboutPage() {
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-soft-blue text-brand-blue text-xs font-bold uppercase tracking-wider">
               Our Founding Mission
             </div>
-            <h1 className="text-4xl sm:text-5xl font-black text-navy tracking-tight leading-tight">
-              Honest Education for <span className="highlight-lime">Middle Schoolers</span>
+            <h1 className="text-4xl sm:text-5xl font-extrabold text-[#310064] tracking-tight leading-tight">
+              Your Ambition. <span className="highlight-lime">Our Mission.</span>
             </h1>
-            <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
-              EdNxt was created around one core belief: Grades 6 to 8 are the most formative intellectual years of a child’s life. What they master today shapes their confidence for tomorrow.
+            <p className="text-base sm:text-lg text-[#746B80] max-w-2xl mx-auto leading-relaxed">
+              TutorAstra is personalised one-to-one learning. A tutor stays with the student, and the plan is agreed in consultation.
             </p>
           </div>
         </section>

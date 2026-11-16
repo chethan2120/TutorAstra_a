@@ -40,20 +40,20 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center p-4 bg-navy-dark">
+    <div className="flex min-h-screen w-full items-center justify-center bg-[#240047] p-4">
       <div className="max-w-md w-full bg-white rounded-3xl p-8 sm:p-10 shadow-card-hover space-y-6">
         <div className="text-center space-y-2">
-          <Link href="/" className="inline-block mb-3">
+          <Link href="/" className="mb-3 inline-block">
             <img
-              src="/logo-light.svg"
-              alt="EdNxt Logo"
-              width={175}
-              height={40}
-              className="h-10 w-auto mx-auto"
-              style={{ maxHeight: '40px', width: 'auto', display: 'block' }}
+              src="/tutorastra-logo.jpg"
+              alt="TutorAstra"
+              width={72}
+              height={72}
+              className="mx-auto h-16 w-16 rounded-full object-cover ring-2 ring-[#F4CC45]"
             />
           </Link>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-soft-blue text-brand-blue text-xs font-bold uppercase">
+          <p className="font-display text-3xl font-semibold text-[#310064]">TutorAstra</p>
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-[#F0E9FA] px-3 py-1 text-xs font-bold uppercase text-[#6527B8]">
             <Shield className="w-3.5 h-3.5" />
             <span>Admin Management Console</span>
           </div>
@@ -80,7 +80,7 @@ export default function AdminLoginPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@ednxt.co"
+                placeholder="you@email.com"
                 className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 text-sm text-navy placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/30"
               />
             </div>
@@ -112,17 +112,17 @@ export default function AdminLoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3.5 rounded-xl font-bold text-sm bg-navy text-white hover:bg-navy-dark shadow-soft flex items-center justify-center gap-2 transition-all disabled:opacity-70"
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#310064] py-3.5 text-sm font-bold text-white shadow-soft transition-all hover:bg-[#6527B8] disabled:opacity-70"
           >
             {loading ? (
               <>
-                <Loader2 className="w-4 h-4 animate-spin text-brand-lime" />
+                <Loader2 className="h-4 w-4 animate-spin text-[#F4CC45]" />
                 <span>Verifying Credentials...</span>
               </>
             ) : (
               <>
                 <span>Sign In to Dashboard</span>
-                <ArrowRight className="w-4 h-4 text-brand-lime" />
+                <ArrowRight className="h-4 w-4 text-[#F4CC45]" />
               </>
             )}
           </button>

@@ -158,9 +158,9 @@ export const INITIAL_COURSES = [
 
 export const INITIAL_SETTINGS: Record<string, string> = {
   // General & Contact
-  'site_name': 'EdNxt Academy',
-  'tagline': 'Build Strong Foundations. Prepare for Tomorrow.',
-  'hero_subheading': 'A complete learning programme for Grades 6–8 — Academic Excellence + Future-Ready Skills.',
+  'site_name': 'TutorAstra',
+  'tagline': 'Your Ambition. Our Mission.',
+  'hero_subheading': 'Personalised one-to-one learning, shaped around each student’s ambitions.',
   'contact_email': 'admissions@ednxt.co',
   'contact_phone': '+971 4 234 5678',
   'whatsapp_number': '+971 50 123 4567',

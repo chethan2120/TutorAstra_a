@@ -1,180 +1,145 @@
 import React from 'react';
 import Link from 'next/link';
-import { Mail, Phone, MapPin, ArrowRight, Shield, Award, Sparkles } from 'lucide-react';
+import Logo from '@/components/tutorastra/Logo';
+
+const explore = [
+  { href: '/#about', label: 'About Us' },
+  { href: '/#subjects', label: 'Subjects' },
+  { href: '/#school-years', label: 'School Years' },
+  { href: '/#how-it-works', label: 'How It Works' },
+  { href: '/#a-lesson', label: 'A Lesson' },
+  { href: '/#for-parents', label: 'For Parents' },
+  { href: '/#ai-tutor', label: 'AI Tutor' },
+  { href: '/#consultation', label: 'Contact' },
+  { href: '/login', label: 'Login' },
+];
+
+const subjects = [
+  'Mathematics',
+  'Physics',
+  'Chemistry',
+  'Biology',
+  'Science',
+  'English',
+  'Computer Science',
+  'Commerce',
+  'More Subjects',
+];
+
+function SocialMark({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <span
+      title={`${label} profile to be confirmed`}
+      aria-label={`${label} profile to be confirmed`}
+      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#F4CC45]/40 text-[#F4CC45]"
+    >
+      {children}
+    </span>
+  );
+}
 
 export default function Footer() {
   return (
-    <footer className="bg-navy-dark text-slate-300 pt-16 pb-8 border-t border-navy-light/30">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-navy-light/40">
-          {/* Brand Column */}
-          <div className="lg:col-span-2 space-y-4">
-            <Link href="/" className="inline-block">
-              <img
-                src="/logo-dark.svg"
-                alt="EdNxt Logo"
-                width={175}
-                height={40}
-                className="h-10 w-auto"
-                style={{ maxHeight: '40px', width: 'auto', display: 'block' }}
-              />
-            </Link>
-            <p className="text-sm text-slate-300 max-w-sm leading-relaxed">
-              Build Strong Foundations. Prepare for Tomorrow. A dedicated, rigorous learning programme for Grades 6–8 across CBSE and British Key Stage 3.
-            </p>
-            <div className="pt-2 flex flex-col gap-2 text-xs text-slate-400">
-              <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-brand-blue shrink-0" />
-                <span>Dubai Knowledge Park, Dubai, United Arab Emirates</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-brand-blue shrink-0" />
-                <a href="mailto:admissions@ednxt.co" className="hover:text-white transition-colors">
-                  admissions@ednxt.co
-                </a>
-              </div>
-              <div className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-brand-blue shrink-0" />
-                <a href="tel:+97142345678" className="hover:text-white transition-colors">
-                  +971 4 234 5678
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* Curricula Links */}
-          <div className="space-y-3">
-            <h4 className="text-white text-sm font-bold tracking-wider uppercase">Curriculum</h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/curriculum" className="text-brand-lime font-bold hover:underline transition-colors flex items-center gap-1">
-                  <span>Interactive Curriculum Hub</span>
-                  <span>→</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/curriculum/cbse" className="hover:text-brand-lime transition-colors">
-                  CBSE (NCERT Aligned)
-                </Link>
-              </li>
-              <li>
-                <Link href="/curriculum/british" className="hover:text-brand-lime transition-colors">
-                  British Curriculum (KS3)
-                </Link>
-              </li>
-              <li>
-                <Link href="/curriculum/cbse#grade-6" className="text-slate-400 hover:text-white transition-colors text-xs">
-                  • Grade 6 / Year 7 Syllabus
-                </Link>
-              </li>
-              <li>
-                <Link href="/curriculum/cbse#grade-7" className="text-slate-400 hover:text-white transition-colors text-xs">
-                  • Grade 7 / Year 8 Syllabus
-                </Link>
-              </li>
-              <li>
-                <Link href="/curriculum/cbse#grade-8" className="text-slate-400 hover:text-white transition-colors text-xs">
-                  • Grade 8 / Year 9 Syllabus
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Learning Streams Links */}
-          <div className="space-y-3">
-            <h4 className="text-white text-sm font-bold tracking-wider uppercase">Learning Streams</h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/courses/science" className="hover:text-brand-lime transition-colors">
-                  Science Mastery
-                </Link>
-              </li>
-              <li>
-                <Link href="/courses/mathematics" className="hover:text-brand-lime transition-colors">
-                  Mathematics & Logic
-                </Link>
-              </li>
-              <li>
-                <Link href="/courses/ai-for-students" className="hover:text-brand-lime transition-colors flex items-center gap-1.5">
-                  AI for Students
-                  <span className="text-[10px] bg-brand-blue text-white px-1.5 py-0.2 rounded font-semibold">New</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/courses/public-speaking" className="hover:text-brand-lime transition-colors">
-                  Public Speaking & Debate
-                </Link>
-              </li>
-              <li>
-                <Link href="/packages" className="hover:text-brand-lime transition-colors">
-                  Course Packages & Pricing
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Company & Portals */}
-          <div className="space-y-3">
-            <h4 className="text-white text-sm font-bold tracking-wider uppercase">Explore & Legal</h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/about" className="hover:text-brand-lime transition-colors">
-                  About EdNxt
-                </Link>
-              </li>
-              <li>
-                <Link href="/free-trial" className="hover:text-brand-lime transition-colors">
-                  Book Free Trial Class
-                </Link>
-              </li>
-              <li>
-                <Link href="/login" className="hover:text-brand-lime transition-colors">
-                  Login
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="hover:text-brand-lime transition-colors">
-                  Contact Admissions
-                </Link>
-              </li>
-              <li>
-                <Link href="/privacy-policy" className="hover:text-brand-lime transition-colors">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/terms" className="hover:text-brand-lime transition-colors">
-                  Terms and Conditions
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        {/* Academic Disclaimer */}
-        <div className="py-6 border-b border-navy-light/30 text-xs text-slate-400 leading-relaxed">
-          <p>
-            <strong className="text-slate-300">Curriculum Disclaimer:</strong> NCERT has been revising textbooks. The chapter lists are at topic level. The actual syllabus will be decided based on mutual agreement between the student and the teacher.
+    <footer className="bg-[#240047] text-[#f4eefe]">
+      <div className="mx-auto grid max-w-7xl gap-12 px-4 py-16 sm:px-6 md:grid-cols-2 lg:grid-cols-12 lg:px-8">
+        <div className="lg:col-span-4">
+          <Logo tone="light" imageClassName="h-16 w-16" />
+          <p className="mt-5 max-w-sm text-sm leading-relaxed text-white/75">
+            Personalised one-to-one learning for students who want guidance that respects their pace, their goals and their ambitions.
           </p>
+          <div className="mt-6 flex gap-3" aria-label="Social media">
+            <SocialMark label="Instagram">
+              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true">
+                <rect x="4" y="4" width="16" height="16" rx="4" />
+                <circle cx="12" cy="12" r="3.2" />
+                <circle cx="17.2" cy="6.8" r="0.7" fill="currentColor" stroke="none" />
+              </svg>
+            </SocialMark>
+            <SocialMark label="Facebook">
+              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden="true">
+                <path d="M14.2 8.5H16V6h-1.8C11.8 6 11 7.3 11 9.1V10H9.5v2.4H11V18h2.4v-5.6h1.8l.4-2.4H13.4V9.2c0-.5.2-.7.8-.7Z" />
+              </svg>
+            </SocialMark>
+            <SocialMark label="LinkedIn">
+              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden="true">
+                <path d="M7.1 9.4H4.7V19h2.4V9.4ZM5.9 4.8A1.5 1.5 0 1 0 5.9 7.8 1.5 1.5 0 0 0 5.9 4.8ZM19.3 19h-2.4v-4.7c0-1.3-.5-2.1-1.6-2.1-1.2 0-1.8.8-1.8 2.1V19h-2.4V9.4h2.3v1.3c.4-.7 1.3-1.6 2.9-1.6 2 0 3 1.3 3 3.9V19Z" />
+              </svg>
+            </SocialMark>
+            <SocialMark label="YouTube">
+              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden="true">
+                <path d="M20.2 8.2a2.4 2.4 0 0 0-1.7-1.7C17 6.1 12 6.1 12 6.1s-5 0-6.5.4a2.4 2.4 0 0 0-1.7 1.7A25 25 0 0 0 3.4 12a25 25 0 0 0 .4 3.8 2.4 2.4 0 0 0 1.7 1.7c1.5.4 6.5.4 6.5.4s5 0 6.5-.4a2.4 2.4 0 0 0 1.7-1.7 25 25 0 0 0 .4-3.8 25 25 0 0 0-.4-3.8ZM10.6 14.7V9.3L15 12l-4.4 2.7Z" />
+              </svg>
+            </SocialMark>
+          </div>
+          <p className="mt-3 text-xs text-white/50">Social profiles will be added when confirmed.</p>
         </div>
 
-        {/* Bottom Bar with Mandatory Exact Text */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
-          <div>
-            © {new Date().getFullYear()} EdNxt Academy. All rights reserved. Honest, transparent middle-school education.
-          </div>
+        <div className="lg:col-span-2">
+          <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#F4CC45]">Explore</h2>
+          <ul className="mt-4 space-y-2.5 text-sm">
+            {explore.map((item) => (
+              <li key={item.label}>
+                <Link href={item.href} className="text-white/80 transition hover:text-[#F4CC45]">
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-          {/* EXACT TEXT REQUIREMENT: Only "WebNxt" must link to https://webnxt.co/ */}
-          <div>
+        <div className="lg:col-span-3">
+          <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#F4CC45]">Subjects</h2>
+          <ul className="mt-4 space-y-2.5 text-sm">
+            {subjects.map((subject) => (
+              <li key={subject}>
+                <Link
+                  href={`/?subject=${encodeURIComponent(subject)}#subjects`}
+                  className="text-white/80 transition hover:text-[#F4CC45]"
+                >
+                  {subject}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="lg:col-span-3">
+          <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#F4CC45]">Contact</h2>
+          <ul className="mt-4 space-y-3 text-sm text-white/80">
+            <li>
+              <span className="block text-xs uppercase tracking-wider text-white/45">Email</span>
+              To be confirmed
+            </li>
+            <li>
+              <span className="block text-xs uppercase tracking-wider text-white/45">Phone</span>
+              To be confirmed
+            </li>
+            <li>
+              <span className="block text-xs uppercase tracking-wider text-white/45">Location</span>
+              To be confirmed
+            </li>
+          </ul>
+          <Link
+            href="/login"
+            className="mt-6 inline-flex rounded-full border border-[#F4CC45] px-4 py-2 text-sm font-semibold text-[#F4CC45] transition hover:bg-[#F4CC45] hover:text-[#310064]"
+          >
+            Login
+          </Link>
+        </div>
+      </div>
+
+      <div className="border-t border-white/10">
+        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-6 text-sm text-white/65 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
+          <p>© {new Date().getFullYear()} TutorAstra. All rights reserved.</p>
+          <p>
             Designed and Maintained by{' '}
-            <a
-              href="https://webnxt.co/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white font-semibold hover:text-brand-lime underline decoration-brand-lime/60 hover:decoration-brand-lime transition-colors"
-            >
+            <a href="https://webnxt.co/" target="_blank" rel="noopener noreferrer" className="font-semibold text-[#F4CC45] underline-offset-4 hover:underline">
               WebNxt
             </a>
+          </p>
+          <div className="flex gap-4">
+            <Link href="/privacy-policy" className="hover:text-white">Privacy</Link>
+            <Link href="/terms" className="hover:text-white">Terms</Link>
           </div>
         </div>
       </div>

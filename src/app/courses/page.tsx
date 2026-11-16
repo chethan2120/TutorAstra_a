@@ -7,7 +7,7 @@ import { ArrowRight, Sparkles, BookOpen, Clock, Calendar, Check, Compass } from 
 import { getAllCourses } from '@/lib/db';
 
 export const metadata = {
-  title: 'All Educational Courses & Streams | Grades 6–8 | EdNxt',
+  title: 'Subjects | TutorAstra',
   description: 'Explore all 4 learning streams: Science Mastery, Mathematics Problem Solving, AI for Students, and Public Speaking. CBSE and British KS3 aligned.',
 };
 

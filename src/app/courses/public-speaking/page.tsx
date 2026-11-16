@@ -7,7 +7,7 @@ import { ALL_CURRICULA, PUBLIC_SPEAKING_RUBRIC } from '@/lib/curriculumData';
 import { Mic, Sparkles, Award, Clock, ArrowRight, Video, Users, CheckCircle2 } from 'lucide-react';
 
 export const metadata = {
-  title: 'Public Speaking & Leadership | Grades 6–8 | EdNxt',
+  title: 'Public Speaking | TutorAstra',
   description: 'Conquer stage fright, master debate rebuttals, and deliver inspiring TED-style talks. Level 1 (Confident Voice), Level 2 (Persuasive Speaker), Level 3 (Leader & Orator).',
 };
 

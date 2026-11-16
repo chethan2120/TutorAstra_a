@@ -1,78 +1,36 @@
 import React from 'react';
+import type { Metadata } from 'next';
+import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
-export const metadata = {
-  title: 'Terms and Conditions | EdNxt Academy',
-  description: 'Terms of service, academic policies, term enrollment rules, and code of conduct for EdNxt Academy.',
+export const metadata: Metadata = {
+  title: 'Terms and Conditions',
+  description: 'TutorAstra terms are being confirmed before public enrolment. Consultation requests on this site are saved for the team to review.',
 };
 
 export default function TermsPage() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex min-h-screen flex-col">
       <Navbar />
-
-      <main className="flex-grow py-16 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-          <div className="space-y-3 pb-6 border-b border-slate-200">
-            <h1 className="text-3xl sm:text-4xl font-black text-navy">Terms and Conditions</h1>
-            <p className="text-xs text-slate-500">Effective Date: November 2026</p>
-          </div>
-
-          <div className="prose prose-slate max-w-none space-y-6 text-sm text-slate-600 leading-relaxed">
-            <section className="space-y-2">
-              <h2 className="text-lg font-bold text-navy">1. Educational Services</h2>
-              <p>
-                EdNxt Academy provides live, instructor-led supplemental education for middle school students in Grades 6 through 8 across CBSE (NCERT) and British Key Stage 3 curricula. Programmes are delivered in three 12-week terms per academic year (36 weeks total), aligned with UAE school calendars.
-              </p>
-            </section>
-
-            <section className="space-y-2">
-              <h2 className="text-lg font-bold text-navy">2. Free Trial Policy</h2>
-              <p>
-                Parents may book one (1) complimentary trial class per registered student in any offered learning stream (Science, Mathematics, AI for Students, or Public Speaking). Free trial classes carry zero financial obligation or automatic renewal requirement.
-              </p>
-            </section>
-
-            <section className="space-y-2">
-              <h2 className="text-lg font-bold text-navy">3. Term Enrolment & Tuition Fees</h2>
-              <p>
-                Tuition fees are structured term-by-term and published transparently in United Arab Emirates Dirhams (AED). Tuition covers 12 weeks of scheduled live classes, weekly graded homework assignments, one weekly doubt-clearing slot, and formal assessment report cards. Payment must be cleared prior to the start of each term.
-              </p>
-            </section>
-
-            <section className="space-y-2">
-              <h2 className="text-lg font-bold text-navy">4. Syllabus Alignment & Adaptations</h2>
-              <p>
-                NCERT and British exam boards periodically revise chapter and topic emphases. Topic lists provided on this website reflect standard curricula frameworks. As explicitly noted, the precise syllabus for each cohort will be mutually aligned between the teacher, student, and parent during the Week 0 diagnostic benchmark.
-              </p>
-            </section>
-
-            <section className="space-y-2">
-              <h2 className="text-lg font-bold text-navy">5. Student Code of Conduct & Academic Integrity</h2>
-              <p>
-                Students are expected to attend live sessions punctually, participate respectfully, and maintain academic honesty. In AI and project-based streams, students must use artificial intelligence tools responsibly as thought partners rather than substituting their own independent critical thinking.
-              </p>
-            </section>
-
-            <section className="space-y-2">
-              <h2 className="text-lg font-bold text-navy">6. Intellectual Property & Maintenance Notice</h2>
-              <p>
-                All proprietary curriculum materials, rubrics, and project worksheets are the intellectual property of EdNxt Academy. This website is Designed and Maintained by{' '}
-                <a
-                  href="https://webnxt.co/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-brand-blue font-semibold hover:underline"
-                >
-                  WebNxt
-                </a>.
-              </p>
-            </section>
-          </div>
+      <main className="flex-grow bg-white py-16">
+        <div className="mx-auto max-w-3xl space-y-6 px-4 sm:px-6">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#6527B8]">TutorAstra</p>
+          <h1 className="font-display text-4xl text-[#310064] sm:text-5xl">Terms and Conditions</h1>
+          <p className="text-sm leading-relaxed text-[#746B80]">
+            The full terms for lessons, fees and schedules are still being confirmed. Nothing on this website is an offer of a priced programme, a board qualification, or a guaranteed academic result.
+          </p>
+          <p className="text-sm leading-relaxed text-[#746B80]">
+            A consultation request is a message to the TutorAstra team. It is saved in the existing enquiry desk and does not by itself reserve a tutor or a class. A member of the team confirms the next step with you.
+          </p>
+          <p className="text-sm leading-relaxed text-[#746B80]">
+            The Ms. Violet section is a preview of a planned assessment experience. Files chosen there stay in your browser for this demo and are not graded.
+          </p>
+          <Link href="/#consultation" className="inline-flex rounded-full bg-[#F4CC45] px-5 py-3 text-sm font-semibold text-[#310064]">
+            Request a consultation
+          </Link>
         </div>
       </main>
-
       <Footer />
     </div>
   );
