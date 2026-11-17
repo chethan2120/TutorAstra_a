@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Lock, Mail, ArrowRight, Shield, AlertCircle, Loader2 } from 'lucide-react';
+import { DEMO_ACCOUNTS, DEMO_PASSWORD, deskPath } from '@/lib/demo';
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -11,6 +12,27 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState('demo123');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const signInAs = async (accountEmail: string) => {
+    setEmail(accountEmail);
+    setPassword(DEMO_PASSWORD);
+    setError(null);
+    setLoading(true);
+    try {
+      const res = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: accountEmail, password: DEMO_PASSWORD }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Authentication failed');
+      router.push(deskPath(data.user.role));
+      router.refresh();
+    } catch (err: any) {
+      setError(err.message || 'Invalid email or password.');
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,7 +52,9 @@ export default function AdminLoginPage() {
         throw new Error(data.error || 'Authentication failed');
       }
 
-      router.push('/admin/dashboard');
+      if (data.user.role === 'teacher') router.push('/teacher');
+      else if (data.user.role === 'student') router.push('/student');
+      else router.push('/admin/dashboard');
       router.refresh();
     } catch (err: any) {
       setError(err.message || 'Invalid email or password.');
@@ -129,25 +153,19 @@ export default function AdminLoginPage() {
         </form>
 
         {/* Demo Credentials Box for Evaluation */}
-        <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-2">
-          <div className="font-bold text-navy flex items-center justify-between">
-            <span>🔑 Active Login Credentials:</span>
-            <span className="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">Ready</span>
-          </div>
-          <div className="space-y-1 font-mono text-[11px]">
-            <div className="flex justify-between items-center bg-white p-1.5 rounded border border-slate-200">
-              <span className="text-navy font-bold">Admin:</span>
-              <span>admin@gmail.com / demo123</span>
-            </div>
-            <div className="flex justify-between items-center bg-white p-1.5 rounded border border-slate-200">
-              <span className="text-navy font-bold">Teacher:</span>
-              <span>teacher@gmail.com / demo123</span>
-            </div>
-            <div className="flex justify-between items-center bg-white p-1.5 rounded border border-slate-200">
-              <span className="text-navy font-bold">Student:</span>
-              <span>student@gmail.com / demo123</span>
-            </div>
-          </div>
+        <div className="space-y-2 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-xs text-slate-600">
+          <div className="font-bold text-navy">One-click sign in</div>
+          {DEMO_ACCOUNTS.filter((account) => account.login).map((account) => (
+            <button
+              key={account.email}
+              type="button"
+              onClick={() => signInAs(account.email)}
+              className="flex w-full items-center justify-between rounded-xl border border-slate-200 bg-white px-3 py-2 text-left"
+            >
+              <span className="font-bold text-navy">{account.label}</span>
+              <span className="font-mono text-[11px]">{account.email}</span>
+            </button>
+          ))}
         </div>
 
         <div className="text-center pt-2">

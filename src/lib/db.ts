@@ -51,6 +51,7 @@ export function getDb(): Database.Database {
     initTables(dbInstance);
     isDbInitialized = true;
   }
+  ensurePortalSchema(dbInstance);
 
   return dbInstance;
 }
@@ -529,11 +530,262 @@ export function verifyUserCredentials(email: string, passwordPlain: string) {
   const db = getDb();
   const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email) as any;
   if (!user) return null;
+  if (user.is_active === 0) return null;
   const hash = hashPassword(passwordPlain);
   if (user.password_hash === hash) {
     return { id: user.id, email: user.email, name: user.name, role: user.role };
   }
   return null;
+}
+
+function ensurePortalSchema(db: Database.Database) {
+  const cols = db.prepare('PRAGMA table_info(users)').all() as { name: string }[];
+  const names = new Set(cols.map((col) => col.name));
+  if (!names.has('is_active')) db.exec('ALTER TABLE users ADD COLUMN is_active INTEGER DEFAULT 1');
+  if (!names.has('timezone')) db.exec("ALTER TABLE users ADD COLUMN timezone TEXT DEFAULT 'Asia/Dubai'");
+  if (!names.has('must_set_password')) db.exec('ALTER TABLE users ADD COLUMN must_set_password INTEGER DEFAULT 0');
+
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS subjects (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT UNIQUE NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS enrolments (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      student_id INTEGER NOT NULL,
+      subject_id INTEGER NOT NULL,
+      teacher_id INTEGER,
+      total_classes INTEGER NOT NULL,
+      status TEXT DEFAULT 'active',
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE(student_id, subject_id)
+    );
+    CREATE TABLE IF NOT EXISTS class_sessions (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      enrolment_id INTEGER NOT NULL,
+      student_id INTEGER NOT NULL,
+      teacher_id INTEGER,
+      subject_id INTEGER NOT NULL,
+      session_number INTEGER NOT NULL,
+      starts_at TEXT,
+      ends_at TEXT,
+      timezone TEXT NOT NULL,
+      duration_minutes INTEGER NOT NULL,
+      status TEXT NOT NULL,
+      notes TEXT DEFAULT '',
+      zoom_meeting_id TEXT,
+      zoom_join_url TEXT,
+      zoom_start_url TEXT,
+      replacement_for INTEGER,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE TABLE IF NOT EXISTS class_history (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      session_id INTEGER NOT NULL,
+      action TEXT NOT NULL,
+      from_status TEXT,
+      to_status TEXT,
+      from_starts_at TEXT,
+      to_starts_at TEXT,
+      reason TEXT,
+      actor_email TEXT,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE TABLE IF NOT EXISTS messages (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      enrolment_id INTEGER NOT NULL,
+      sender_id INTEGER NOT NULL,
+      body TEXT DEFAULT '',
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE TABLE IF NOT EXISTS message_reads (
+      message_id INTEGER NOT NULL,
+      user_id INTEGER NOT NULL,
+      read_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      PRIMARY KEY (message_id, user_id)
+    );
+    CREATE TABLE IF NOT EXISTS message_attachments (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      message_id INTEGER NOT NULL,
+      filename TEXT NOT NULL,
+      mime TEXT NOT NULL,
+      size INTEGER NOT NULL,
+      storage_path TEXT NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS leave_requests (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      session_id INTEGER NOT NULL UNIQUE,
+      student_id INTEGER NOT NULL,
+      subject_id INTEGER NOT NULL,
+      reason TEXT NOT NULL,
+      status TEXT NOT NULL,
+      requested_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      replacement_session_id INTEGER
+    );
+    CREATE TABLE IF NOT EXISTS recordings (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      session_id INTEGER NOT NULL,
+      student_id INTEGER NOT NULL,
+      title TEXT NOT NULL,
+      storage_key TEXT NOT NULL,
+      status TEXT DEFAULT 'available',
+      watched_seconds INTEGER DEFAULT 0,
+      consumed_at TEXT,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE TABLE IF NOT EXISTS assessments (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      student_id INTEGER NOT NULL,
+      subject TEXT NOT NULL,
+      material_text TEXT NOT NULL,
+      started_at TEXT NOT NULL,
+      deadline_at TEXT NOT NULL,
+      submitted_at TEXT,
+      score INTEGER,
+      max_score INTEGER,
+      status TEXT NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS assessment_questions (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      assessment_id INTEGER NOT NULL,
+      kind TEXT NOT NULL,
+      prompt TEXT NOT NULL,
+      options_json TEXT,
+      answer TEXT,
+      explanation TEXT
+    );
+    CREATE TABLE IF NOT EXISTS assessment_answers (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      assessment_id INTEGER NOT NULL,
+      question_id INTEGER NOT NULL,
+      answer TEXT,
+      awarded INTEGER DEFAULT 0,
+      feedback TEXT
+    );
+    CREATE TABLE IF NOT EXISTS email_log (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      recipient TEXT NOT NULL,
+      subject TEXT NOT NULL,
+      body TEXT NOT NULL,
+      status TEXT NOT NULL,
+      error TEXT,
+      related_type TEXT,
+      related_id TEXT,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE TABLE IF NOT EXISTS invite_tokens (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER NOT NULL,
+      token_hash TEXT NOT NULL,
+      expires_at TEXT NOT NULL,
+      used_at TEXT
+    );
+    CREATE INDEX IF NOT EXISTS idx_sessions_student ON class_sessions(student_id, starts_at);
+    CREATE INDEX IF NOT EXISTS idx_sessions_teacher ON class_sessions(teacher_id, starts_at);
+    CREATE INDEX IF NOT EXISTS idx_messages_enrolment ON messages(enrolment_id, id);
+    CREATE TABLE IF NOT EXISTS staff_messages (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      sender_id INTEGER NOT NULL,
+      recipient_id INTEGER,
+      body TEXT DEFAULT '',
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE TABLE IF NOT EXISTS staff_attachments (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      message_id INTEGER NOT NULL,
+      filename TEXT NOT NULL,
+      mime TEXT NOT NULL,
+      size INTEGER NOT NULL,
+      storage_path TEXT NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS attendance_punches (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER NOT NULL,
+      punched_in_at TEXT NOT NULL,
+      punched_out_at TEXT
+    );
+    CREATE TABLE IF NOT EXISTS notifications (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT NOT NULL,
+      body TEXT NOT NULL,
+      audience TEXT NOT NULL DEFAULT 'all',
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE TABLE IF NOT EXISTS notification_reads (
+      notification_id INTEGER NOT NULL,
+      user_id INTEGER NOT NULL,
+      PRIMARY KEY (notification_id, user_id)
+    );
+  `);
+  for (const statement of [
+    'ALTER TABLE users ADD COLUMN avatar TEXT',
+    'ALTER TABLE users ADD COLUMN access_json TEXT DEFAULT ""',
+    'ALTER TABLE users ADD COLUMN phone TEXT DEFAULT ""',
+    'ALTER TABLE subjects ADD COLUMN details TEXT DEFAULT ""',
+  ]) {
+    try { db.exec(statement); } catch { /* column already exists */ }
+  }
+
+  const subjectCount = db.prepare('SELECT COUNT(*) AS count FROM subjects').get() as { count: number };
+  if (subjectCount.count === 0) {
+    const insert = db.prepare('INSERT INTO subjects (name) VALUES (?)');
+    for (const name of ['Mathematics', 'Physics', 'Chemistry', 'Biology', 'Science', 'English', 'Computer Science', 'Commerce']) {
+      insert.run(name);
+    }
+  }
+  ensureDemoRoster(db);
+}
+
+function ensureDemoRoster(db: Database.Database) {
+  const password = hashPassword('demo123');
+  const people: [string, string, string][] = [
+    ['teacher1@gmail.com', 'Teacher 1', 'teacher'],
+    ['teacher2@gmail.com', 'Teacher 2', 'teacher'],
+    ['student1@gmail.com', 'Student 1', 'student'],
+    ['student2@gmail.com', 'Student 2', 'student'],
+    ['student3@gmail.com', 'Student 3', 'student'],
+    ['student4@gmail.com', 'Student 4', 'student'],
+  ];
+  const insertUser = db.prepare(`
+    INSERT INTO users (email, password_hash, name, role, is_active, timezone, must_set_password)
+    VALUES (?, ?, ?, ?, 1, 'Asia/Dubai', 0)
+  `);
+  for (const [email, name, role] of people) {
+    const existing = db.prepare('SELECT id FROM users WHERE email = ?').get(email);
+    if (!existing) insertUser.run(email, password, name, role);
+  }
+  const teacher = db.prepare(`SELECT id FROM users WHERE email = 'teacher1@gmail.com'`).get() as { id: number } | undefined;
+  const science = db.prepare(`SELECT id FROM subjects WHERE name = 'Science'`).get() as { id: number } | undefined;
+  if (!teacher || !science) return;
+  const students = ['student1@gmail.com', 'student2@gmail.com', 'student3@gmail.com', 'student4@gmail.com'];
+  students.forEach((email, index) => {
+    const student = db.prepare('SELECT id FROM users WHERE email = ?').get(email) as { id: number } | undefined;
+    if (!student) return;
+    let enrolment = db.prepare('SELECT id FROM enrolments WHERE student_id = ? AND subject_id = ?').get(student.id, science.id) as { id: number } | undefined;
+    if (!enrolment) {
+      const info = db.prepare(`
+        INSERT INTO enrolments (student_id, teacher_id, subject_id, total_classes, status)
+        VALUES (?, ?, ?, 8, 'active')
+      `).run(student.id, teacher.id, science.id);
+      enrolment = { id: Number(info.lastInsertRowid) };
+    }
+    const existingSessions = db.prepare('SELECT COUNT(*) AS count FROM class_sessions WHERE enrolment_id = ?').get(enrolment.id) as { count: number };
+    if (existingSessions.count > 0) return;
+    const start = new Date();
+    start.setUTCHours(12 + index, 0, 0, 0);
+    start.setUTCDate(start.getUTCDate() + 1 + (index % 3));
+    const insertSession = db.prepare(`
+      INSERT INTO class_sessions (
+        enrolment_id, student_id, teacher_id, subject_id, session_number,
+        starts_at, ends_at, timezone, duration_minutes, status
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, 'Asia/Dubai', 60, 'Scheduled')
+    `);
+    for (let number = 1; number <= 2; number += 1) {
+      const begins = new Date(start.getTime() + (number - 1) * 2 * 24 * 60 * 60 * 1000);
+      const ends = new Date(begins.getTime() + 60 * 60 * 1000);
+      insertSession.run(enrolment.id, student.id, teacher.id, science.id, number, begins.toISOString(), ends.toISOString());
+    }
+  });
 }
 
 export function updateUserPassword(email: string, newPasswordPlain: string) {

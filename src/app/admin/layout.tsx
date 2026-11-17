@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation';
 import React from 'react';
 import { AdminTopBar, AdminSidebar } from '@/components/AdminNav';
 import { getCurrentSession } from '@/lib/auth';
@@ -18,12 +19,15 @@ export default function AdminLayout({
     return <div className="min-h-screen bg-slate-50 font-sans">{children}</div>;
   }
 
+  if (session.role === 'teacher') redirect('/teacher');
+  if (session.role === 'student') redirect('/student');
+
   return (
-    <div className="min-h-screen bg-[#FAFAFA] flex flex-col font-sans text-slate-800">
+    <div className="flex h-screen flex-col overflow-hidden bg-[#FAFAFA] font-sans text-slate-800">
       <AdminTopBar userEmail={session.email} userName={session.name} />
-      <div className="flex-1 flex flex-col lg:flex-row min-w-0">
+      <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
         <AdminSidebar userEmail={session.email} userName={session.name} />
-        <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+        <main className="min-w-0 flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
           {children}
         </main>
       </div>

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getUserByEmail, updateUserPassword, logActivity } from '@/lib/db';
+import { getUserByEmail, updateUserPassword, logActivity, verifyUserCredentials } from '@/lib/db';
 import { getCurrentSession } from '@/lib/auth';
 
 export async function POST(request: Request) {
@@ -15,10 +15,23 @@ export async function POST(request: Request) {
     }
 
     const session = getCurrentSession();
+    if (!session) {
+      return NextResponse.json({ error: 'Sign in required.' }, { status: 401 });
+    }
+    if (email.trim().toLowerCase() !== session.email) {
+      return NextResponse.json({ error: 'You can only change your own password here.' }, { status: 403 });
+    }
+    if (!current_password) {
+      return NextResponse.json({ error: 'Enter your current password.' }, { status: 400 });
+    }
+
     const targetUser = getUserByEmail(email.trim().toLowerCase());
 
     if (!targetUser) {
       return NextResponse.json({ error: 'User not found.' }, { status: 404 });
+    }
+    if (!verifyUserCredentials(targetUser.email, current_password)) {
+      return NextResponse.json({ error: 'The current password is not correct.' }, { status: 403 });
     }
 
     // Update password

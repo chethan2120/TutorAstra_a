@@ -6,6 +6,7 @@ import { KeyRound, Lock, Mail, ArrowRight, AlertCircle, CheckCircle2, Loader2 } 
 
 export default function AdminResetPasswordPage() {
   const [email, setEmail] = useState('admin@ednxt.co');
+  const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -35,6 +36,7 @@ export default function AdminResetPasswordPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email,
+          current_password: currentPassword,
           new_password: newPassword
         })
       });
@@ -89,6 +91,20 @@ export default function AdminResetPasswordPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-xs text-navy focus:outline-none focus:ring-2 focus:ring-brand-blue/30"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-navy mb-1.5">Current password</label>
+            <div className="relative">
+              <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+              <input
+                type="password"
+                required
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-xs text-navy focus:outline-none focus:ring-2 focus:ring-brand-blue/30"
               />
             </div>

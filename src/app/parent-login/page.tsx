@@ -6,6 +6,7 @@ import Footer from '@/components/Footer';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { User, Lock, ArrowRight, ShieldCheck, CheckCircle2, AlertCircle, Loader2, Sparkles } from 'lucide-react';
+import { DEMO_ACCOUNTS, DEMO_PASSWORD, deskPath } from '@/lib/demo';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -13,7 +14,28 @@ export default function LoginPage() {
   const [password, setPassword] = useState('demo123');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
-  const [studentView, setStudentView] = useState<any | null>(null);
+  const [studentView] = useState<any | null>(null);
+
+  const quickLogin = async (accountEmail: string) => {
+    setEmail(accountEmail);
+    setPassword(DEMO_PASSWORD);
+    setMessage(null);
+    setLoading(true);
+    try {
+      const res = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: accountEmail, password: DEMO_PASSWORD }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Authentication failed. Please check credentials.');
+      router.push(deskPath(data.user.role));
+      router.refresh();
+    } catch (err: any) {
+      setMessage(err.message);
+      setLoading(false);
+    }
+  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,34 +55,19 @@ export default function LoginPage() {
         throw new Error(data.error || 'Authentication failed. Please check credentials.');
       }
 
-      if (data.user.role === 'admin' || data.user.role === 'teacher') {
-        router.push('/admin/dashboard');
-        router.refresh();
+      if (data.user.role === 'teacher') {
+        router.push('/teacher');
+      } else if (data.user.role === 'student') {
+        router.push('/student');
       } else {
-        // Student / Parent Portal View
-        setStudentView({
-          studentName: 'Ethan Jenkins',
-          parentName: data.user.name,
-          grade: 'Grade 7 / Year 8 (British KS3)',
-          activeTerm: 'Term 2 (Week 8)',
-          attendance: '100% Attendance',
-          nextSession: 'Tomorrow at 5:00 PM (Science Lab: Ecosystems)',
-          homeworkStatus: 'Submitted & Graded A',
-          latestTeacherNote:
-            'Ethan continues to excel in linear algebraic manipulations and active participation during British Science lab inquiries. Next live doubt-clearing session confirmed for Thursday 4:30 PM.',
-        });
+        router.push('/admin/dashboard');
       }
+      router.refresh();
     } catch (err: any) {
       setMessage(err.message || 'Invalid email or password.');
     } finally {
       setLoading(false);
     }
-  };
-
-  const fillCredentials = (em: string, pass: string) => {
-    setEmail(em);
-    setPassword(pass);
-    setMessage(null);
   };
 
   return (
@@ -207,44 +214,20 @@ export default function LoginPage() {
               {/* Quick Fill Demo Credentials */}
               <div className="pt-4 border-t border-slate-100 space-y-2">
                 <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider text-center">
-                  Quick Demo Logins (Click to autofill):
+                  One-click sign in
                 </div>
                 <div className="grid grid-cols-1 gap-1.5 text-xs">
-                  <button
-                    type="button"
-                    onClick={() => fillCredentials('admin@gmail.com', 'demo123')}
-                    className="w-full p-2.5 rounded-xl border border-slate-200 hover:border-brand-blue hover:bg-soft-blue/40 text-left transition-colors flex items-center justify-between"
-                  >
-                    <div>
-                      <div className="font-bold text-navy">Super Admin</div>
-                      <div className="text-[11px] text-slate-500">admin@gmail.com / demo123</div>
-                    </div>
-                    <span className="text-[10px] bg-slate-100 px-2 py-0.5 rounded font-bold text-brand-blue">Admin</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => fillCredentials('teacher@gmail.com', 'demo123')}
-                    className="w-full p-2.5 rounded-xl border border-slate-200 hover:border-brand-blue hover:bg-soft-green/40 text-left transition-colors flex items-center justify-between"
-                  >
-                    <div>
-                      <div className="font-bold text-navy">Lead Teacher (Faculty)</div>
-                      <div className="text-[11px] text-slate-500">teacher@gmail.com / demo123</div>
-                    </div>
-                    <span className="text-[10px] bg-slate-100 px-2 py-0.5 rounded font-bold text-emerald-700">Teacher</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => fillCredentials('student@gmail.com', 'demo123')}
-                    className="w-full p-2.5 rounded-xl border border-slate-200 hover:border-brand-blue hover:bg-soft-purple/40 text-left transition-colors flex items-center justify-between"
-                  >
-                    <div>
-                      <div className="font-bold text-navy">Student / Parent Portal</div>
-                      <div className="text-[11px] text-slate-500">student@gmail.com / demo123</div>
-                    </div>
-                    <span className="text-[10px] bg-slate-100 px-2 py-0.5 rounded font-bold text-purple-700">Student</span>
-                  </button>
+                  {DEMO_ACCOUNTS.filter((account) => account.login).map((account) => (
+                    <button
+                      key={account.email}
+                      type="button"
+                      onClick={() => quickLogin(account.email)}
+                      className="flex w-full items-center justify-between rounded-xl border border-slate-200 p-2.5 text-left"
+                    >
+                      <span className="font-bold text-navy">{account.label}</span>
+                      <span className="text-[11px] text-slate-500">{account.email}</span>
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>

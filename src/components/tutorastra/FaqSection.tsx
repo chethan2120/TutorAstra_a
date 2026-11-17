@@ -19,11 +19,11 @@ const items = [
   },
   {
     q: 'How can I access my student dashboard?',
-    a: 'Use Login in the header or footer. It opens the existing TutorAstra sign-in, which routes administrators and teachers to the dashboard and students to the student view.',
+    a: 'Use Login and choose Admin, Teacher 1, or Student 1. Each account opens its own desk. Inside the profile menu, turn Demo on to switch to Teacher 2 and Students 2, 3 and 4.',
   },
   {
     q: 'How does the AI Tutor work?',
-    a: 'Ms. Violet is a preview of a future assessment companion. The planned experience accepts a PDF or a clear image of up to three pages, then offers multiple-choice and written questions, a timer, and an instant result. In this demo the screen is visual only: files stay in your browser and answers are not graded or emailed.',
+    a: 'Ms. Violet speaks or shows “Ready For Test”, “Select the subject”, and “Upload File here”. A signed-in student can upload a PDF of up to three pages. The test is timed, the score appears on the student dashboard, and a copy is placed in the Teacher box. Email is queued and sends when mail is connected. A photograph is not read yet.',
   },
 ];
 
