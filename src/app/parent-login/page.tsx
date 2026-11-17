@@ -14,7 +14,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('demo123');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
-  const [studentView] = useState<any | null>(null);
+  const [studentView, setStudentView] = useState<any | null>(null);
 
   const quickLogin = async (accountEmail: string) => {
     setEmail(accountEmail);
@@ -91,7 +91,16 @@ export default function LoginPage() {
                 </div>
                 <button
                   type="button"
-                  onClick={() => setStudentView(null)}
+                  onClick={async () => {
+                    setStudentView(null);
+                    try {
+                      await fetch('/api/admin/logout', { method: 'POST' });
+                      router.push('/login');
+                      router.refresh();
+                    } catch (error) {
+                      console.error('Logout error:', error);
+                    }
+                  }}
                   className="px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors"
                 >
                   Log Out

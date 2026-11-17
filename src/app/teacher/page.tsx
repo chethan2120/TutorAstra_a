@@ -64,11 +64,6 @@ export default function TeacherDesk() {
     fetch(`/api/portal/messages?enrolmentId=${enrolmentId}`).then((response) => response.json()).then((body) => setMessages(body.messages || []));
   }, [enrolmentId]);
 
-  useEffect(() => {
-    if (view !== 'Message admin') return;
-    fetch('/api/portal/staff-chat').then((response) => response.json()).then((body) => setStaff(body.messages || []));
-  }, [view]);
-
   const students = useMemo(() => {
     const map = new Map<number, string>();
     (data?.enrolments || []).forEach((row: any) => map.set(row.student_id, row.student_name));
@@ -195,18 +190,6 @@ export default function TeacherDesk() {
           </div>
         )}
 
-        {view === 'Assigned courses' && (
-          <div className="mt-6 grid gap-3">
-            {(data.enrolments || []).map((row: any) => (
-              <article key={row.id} className="rounded-2xl bg-white p-4">
-                <h2 className="font-semibold">{row.subject_name}</h2>
-                <p className="text-sm text-[#51475B]">{row.student_name} · {row.balance.remaining} classes remaining of {row.total_classes}</p>
-              </article>
-            ))}
-            {data.enrolments?.length === 0 && <p className="text-sm">You are not assigned to a course yet.</p>}
-          </div>
-        )}
-
         {view === 'Students' && (
           <div className="mt-6 grid gap-4 lg:grid-cols-[220px_1fr]">
             <div className="rounded-2xl bg-white p-3">
@@ -227,19 +210,6 @@ export default function TeacherDesk() {
                 </p>
               ))}
             </div>
-          </div>
-        )}
-
-        {view === 'Today’s classes' && (
-          <div className="mt-6 space-y-3">
-            {(data.todays || []).map((item: SessionRow) => (
-              <article key={item.id} className="rounded-2xl bg-white p-4">
-                <h2 className="font-semibold">{item.subject_name} · {item.student_name}</h2>
-                <p className="text-sm text-[#51475B]">{when(item.starts_at)}</p>
-                <button type="button" onClick={() => join(item.id)} className="mt-3 text-sm font-bold text-[#310064]">Open the class link</button>
-              </article>
-            ))}
-            {data.todays?.length === 0 && <p className="text-sm">No class is scheduled for today.</p>}
           </div>
         )}
 
