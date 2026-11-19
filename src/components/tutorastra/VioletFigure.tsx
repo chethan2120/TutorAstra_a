@@ -23,18 +23,18 @@ export default function VioletFigure({ spoken = true }: { spoken?: boolean }) {
   }, [line, spoken, voice]);
 
   return (
-    <div className="violet-stage">
-      <div className="violet-floor" />
-      <div className="violet-rig" aria-hidden="true">
-        <div className="violet-arm violet-arm-left"><span className="violet-hand" /></div>
-        <div className="violet-body" />
-        <div className="violet-arm violet-arm-right"><span className="violet-hand" /></div>
-        <div className="violet-head">
-          <span className="violet-eye" />
-          <span className="violet-eye" />
-        </div>
-      </div>
-      <p className="violet-line" role="status">{LINES[line]}</p>
+    <div>
+      <figure className="overflow-hidden rounded-lg bg-white shadow-[0_18px_40px_-28px_rgba(49,0,100,0.45)]">
+        <img
+          src="/images/tutor/ms-violet-teaching.jpg"
+          alt="Ms. Violet pointing to a notebook while a student writes the next line"
+          className="aspect-[4/5] w-full object-cover object-[center_20%]"
+        />
+      </figure>
+      <p className="mt-4 text-sm leading-6 text-[#51475B]">
+        She stays on the notebook until the step is clear, then leaves the next question with the student.
+      </p>
+      <p className="mt-3 rounded-lg bg-white px-3 py-2 text-sm font-semibold text-[#310064]" role="status">{LINES[line]}</p>
       {spoken && (
         <button type="button" className="mt-3 rounded-full bg-[#310064] px-3 py-1.5 text-xs font-semibold text-white" onClick={() => setVoice((current) => !current)}>
           {voice ? 'Spoken on' : 'Hear the lines'}

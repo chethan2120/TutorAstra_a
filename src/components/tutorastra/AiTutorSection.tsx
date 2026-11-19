@@ -150,7 +150,7 @@ export default function AiTutorSection() {
       <div className="relative mx-4 mb-10 flex max-w-7xl flex-col items-start justify-between gap-4 rounded-lg border border-[#E8E2ED] bg-white px-5 py-4 sm:mx-6 sm:flex-row sm:items-center sm:px-6 lg:mx-auto">
         <div className="flex items-center gap-4">
           <div>
-            <p className="text-base font-semibold text-[#310064]">Meet Your AI Tutor</p>
+            <p className="text-base font-semibold text-[#310064]">Meet the tutor</p>
             <p className="text-sm text-[#746B80]">Ms. Violet reads a PDF of up to 3 pages after you sign in as a student.</p>
           </div>
         </div>
@@ -160,7 +160,7 @@ export default function AiTutorSection() {
       </div>
       <div className="relative mx-auto grid max-w-7xl items-start gap-12 px-4 sm:px-6 lg:grid-cols-[0.86fr_1.14fr] lg:px-8" data-no-reveal>
         <div className="lg:sticky lg:top-28 lg:self-start" data-reveal="left">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#6527B8]">AI Tutor</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#6527B8]">At the desk</p>
           <h2 className="ta-rule font-display mt-3 text-4xl font-bold text-[#310064] sm:text-5xl">
             <RevealText text="Meet Ms. Violet" />
           </h2>
