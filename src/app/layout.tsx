@@ -5,6 +5,12 @@ import ScrollAction from '@/components/ScrollAction';
 import ScrollAnimations from '@/components/ScrollAnimations';
 import { getSetting } from '@/lib/db';
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover' as const,
+};
+
 export const metadata: Metadata = {
   title: {
     default: 'TutorAstra | Personalised One-to-One Learning',

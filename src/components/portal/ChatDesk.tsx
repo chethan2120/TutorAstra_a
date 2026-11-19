@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Mic, Paperclip, Send } from 'lucide-react';
+import { ArrowLeft, Mic, Paperclip, Send } from 'lucide-react';
 
 type Thread = { id: number; title: string; kind: 'class' | 'staff' };
 type Note = { id: number; body: string; created_at: string; sender_id: number; sender_name: string; attachments?: { id: number; filename: string }[] };
@@ -17,6 +17,7 @@ export default function ChatDesk({ mine }: { mine?: number }) {
   const [sending, setSending] = useState(false);
   const [recording, setRecording] = useState(false);
   const [fileName, setFileName] = useState('');
+  const [focusThread, setFocusThread] = useState(false);
   const pane = useRef<HTMLDivElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const recorder = useRef<MediaRecorder | null>(null);
@@ -147,18 +148,23 @@ export default function ChatDesk({ mine }: { mine?: number }) {
   }
 
   return (
-    <div className="grid h-[72vh] overflow-hidden rounded-2xl border border-[#E8E2ED] bg-[#efeae2] md:grid-cols-[280px_1fr]">
-      <aside className="overflow-y-auto border-r border-[#E8E2ED] bg-white">
+    <div className="grid h-[min(70dvh,720px)] min-h-[24rem] overflow-hidden rounded-2xl border border-[#E8E2ED] bg-[#efeae2] md:grid-cols-[minmax(0,280px)_minmax(0,1fr)]">
+      <aside className={`${focusThread ? 'hidden md:block' : 'block'} min-h-0 overflow-y-auto border-r border-[#E8E2ED] bg-white`}>
         <p className="border-b px-4 py-3 text-xs font-bold uppercase tracking-wide text-[#51475B]">Conversations</p>
         {threads.map((thread) => (
-          <button key={`${thread.kind}-${thread.id}`} type="button" onClick={() => setActive(thread)} className={`block w-full border-b px-4 py-3 text-left ${active?.id === thread.id && active.kind === thread.kind ? 'bg-[#F5F0FA]' : 'hover:bg-[#FAF9FC]'}`}>
-            <span className="block text-sm font-bold text-[#21152D]">{thread.title}</span>
+          <button key={`${thread.kind}-${thread.id}`} type="button" onClick={() => { setActive(thread); setFocusThread(true); }} className={`block w-full border-b px-4 py-3 text-left ${active?.id === thread.id && active.kind === thread.kind ? 'bg-[#F5F0FA]' : 'hover:bg-[#FAF9FC]'}`}>
+            <span className="block truncate text-sm font-bold text-[#21152D]">{thread.title}</span>
           </button>
         ))}
         {threads.length === 0 && <p className="p-4 text-sm text-[#51475B]">No conversation yet.</p>}
       </aside>
-      <section className="flex min-h-0 flex-col">
-        <div className="bg-[#310064] px-4 py-3 text-sm font-bold text-white">{active ? active.title : 'Select a conversation'}</div>
+      <section className={`${focusThread ? 'flex' : 'hidden md:flex'} min-h-0 min-w-0 flex-col`}>
+        <div className="flex items-center gap-1 bg-[#310064] px-2 py-2 text-sm font-bold text-white">
+          <button type="button" onClick={() => setFocusThread(false)} className="flex h-10 w-10 shrink-0 items-center justify-center md:hidden" aria-label="Back to conversations">
+            <ArrowLeft className="h-5 w-5" />
+          </button>
+          <span className="min-w-0 truncate">{active ? active.title : 'Select a conversation'}</span>
+        </div>
         <div ref={pane} className="flex-1 space-y-2 overflow-y-auto p-3">
           {grouped.length === 0 && <p className="text-center text-sm text-[#51475B]">No messages yet. What you send stays here.</p>}
           {grouped.map((note, index) => (
@@ -170,7 +176,7 @@ export default function ChatDesk({ mine }: { mine?: number }) {
                   {note.body && <p>{note.body}</p>}
                   {note.attachments?.map((file) => (
                     file.filename.includes('voice')
-                      ? <audio key={file.id} controls src={`/api/portal/files/${file.id}`} className="mt-1 h-8 max-w-full" />
+                      ? <audio key={file.id} controls src={`/api/portal/files/${file.id}`} className="mt-1 h-8 w-full max-w-[220px]" />
                       : <a key={file.id} className="mt-1 block underline" href={`/api/portal/files/${file.id}`}>{file.filename}</a>
                   ))}
                   <p className="text-right text-[10px] text-slate-500">{note.clock}</p>
@@ -198,7 +204,7 @@ export default function ChatDesk({ mine }: { mine?: number }) {
             onChange={(event) => setText(event.target.value)}
             aria-label="Message"
             placeholder="Type a message"
-            className="h-10 flex-1 rounded-full bg-[#2a3942] px-4 text-sm text-white outline-none placeholder:text-[#8696a0]"
+            className="h-10 min-w-0 flex-1 rounded-full bg-[#2a3942] px-4 text-base text-white outline-none placeholder:text-[#8696a0] sm:text-sm"
           />
           {text.trim() || fileName ? (
             <button type="submit" aria-label="Send" disabled={sending || !active} className="flex h-10 w-10 items-center justify-center rounded-full bg-[#310064] text-white disabled:opacity-50">

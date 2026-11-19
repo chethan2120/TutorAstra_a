@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const control = 'w-full rounded-lg border border-[#E8E2ED] bg-white px-3 py-2 text-sm text-[#21152D]';
+export const control = 'w-full min-w-0 rounded-lg border border-[#E8E2ED] bg-white px-3 py-2 text-base text-[#21152D] sm:text-sm';
 
 export function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (

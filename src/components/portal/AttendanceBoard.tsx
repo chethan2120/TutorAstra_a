@@ -57,7 +57,7 @@ export default function AttendanceBoard({ rows, canMark = false, onChanged }: { 
       </div>
       {notice && <p className="rounded-lg bg-[#F5F0FA] px-3 py-2 text-sm">{notice}</p>}
       <div className="overflow-x-auto rounded-2xl border border-[#E8E2ED] bg-white">
-        <table className="min-w-full text-left text-sm">
+        <table className="min-w-[720px] text-left text-sm">
           <thead className="bg-[#FAF9FC] text-xs font-bold text-[#51475B]">
             <tr>
               <th className="px-3 py-2">Class ID</th>

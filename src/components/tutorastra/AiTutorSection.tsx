@@ -200,7 +200,7 @@ export default function AiTutorSection() {
             </div>
           </div>
 
-          <ol className="mt-4 grid grid-cols-3 gap-2">
+          <ol className="mt-4 grid grid-cols-1 gap-2 min-[420px]:grid-cols-3">
             {STEPS.map((item, index) => (
               <li key={item.label}>
                 <button

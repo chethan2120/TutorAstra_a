@@ -79,7 +79,7 @@ export default function HeroSection() {
     >
       <div className="mx-auto grid max-w-[1280px] items-center gap-8 px-5 pb-10 pt-6 sm:px-8 lg:grid-cols-2 lg:gap-14 lg:px-16 lg:pb-12 lg:pt-8">
         <div>
-          <h1 className="font-display max-w-xl text-[2.4rem] font-extrabold leading-[1.08] text-[#21152D] sm:text-5xl lg:text-[4rem]">
+          <h1 className="font-display max-w-xl break-words text-[1.85rem] font-extrabold leading-[1.12] text-[#21152D] sm:text-5xl lg:text-[4rem]">
             {slide.title}
           </h1>
           <p className="mt-5 max-w-md text-base leading-7 text-[#51475B] sm:text-lg">{slide.text}</p>

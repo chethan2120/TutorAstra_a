@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 export default function DemoPopup() {
   const [open, setOpen] = useState(false);
@@ -53,9 +54,9 @@ export default function DemoPopup() {
     }
   };
 
-  if (!open) return null;
+  if (!open || typeof document === 'undefined') return null;
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-[70] flex items-end justify-center bg-[#21152D]/40 p-4 sm:items-center" role="dialog" aria-modal="true" aria-labelledby="demo-title">
       <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
         <div className="flex items-start justify-between gap-4">
@@ -84,6 +85,7 @@ export default function DemoPopup() {
           </form>
         )}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

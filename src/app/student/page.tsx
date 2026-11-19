@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { AdminTopBar } from '@/components/AdminNav';
+import { AdminTopBar, DeskMenuProvider, SideDrawer, useDeskMenu } from '@/components/AdminNav';
 import ChatDesk from '@/components/portal/ChatDesk';
 import CalendarDesk from '@/components/portal/CalendarDesk';
 import { Field, NoticeCard, control, when } from '@/components/portal/Field';
@@ -13,6 +13,23 @@ function hello(name: string) {
   const hour = new Date().getHours();
   const part = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
   return `${part}, ${name}`;
+}
+
+function StudentMenu({ view, setView }: { view: (typeof NAV)[number]; setView: (item: (typeof NAV)[number]) => void }) {
+  const { setOpen } = useDeskMenu();
+  return (
+    <SideDrawer>
+      <div className="mb-3 flex items-center gap-2.5 px-2">
+        <img src="/tutorastra-logo.jpg" alt="" className="h-9 w-9 rounded-full object-cover ring-2 ring-[#F4CC45]" />
+        <span className="text-sm font-bold text-[#310064]">TutorAstra</span>
+      </div>
+      <nav className="space-y-0.5">
+        {NAV.map((item) => (
+          <button key={item} type="button" onClick={() => { setView(item); setOpen(false); }} className={`block w-full rounded-xl px-3.5 py-2.5 text-left text-xs font-bold ${view === item ? 'bg-[#310064] text-white' : 'text-slate-700 hover:bg-slate-100'}`}>{item}</button>
+        ))}
+      </nav>
+    </SideDrawer>
+  );
 }
 
 export default function StudentDesk() {
@@ -94,20 +111,13 @@ export default function StudentDesk() {
     .sort((a: any, b: any) => new Date(a.starts_at).getTime() - new Date(b.starts_at).getTime())[0];
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] text-[#21152D]">
+    <DeskMenuProvider>
+    <div className="flex min-h-dvh flex-col bg-[#FAFAFA] text-[#21152D]">
       <AdminTopBar userName={data.me.name} userEmail={data.me.email} homeHref="/student" />
-      <div className="flex min-h-[calc(100vh-57px)] flex-col lg:flex-row">
-      <aside className="w-full border-r border-[#F0ECEE] bg-white p-3 lg:w-64">
-        <div className="mb-3 flex items-center gap-2.5 px-2">
-          <img src="/tutorastra-logo.jpg" alt="" className="h-9 w-9 rounded-full object-cover ring-2 ring-[#F4CC45]" />
-          <span className="text-sm font-bold text-[#310064]">TutorAstra</span>
-        </div>
-        {NAV.map((item) => (
-          <button key={item} type="button" onClick={() => setView(item)} className={`mb-1 block w-full rounded-xl px-3.5 py-2.5 text-left text-xs font-bold ${view === item ? 'bg-[#310064] text-white' : 'text-slate-700 hover:bg-slate-100'}`}>{item}</button>
-        ))}
-      </aside>
-      <section className="flex-1 p-5 sm:p-8">
-        <h1 className="font-[Poppins,sans-serif] text-3xl font-semibold">{hello(data.me.name)}</h1>
+      <div className="flex min-h-0 flex-1">
+      <StudentMenu view={view} setView={setView} />
+      <section className="min-w-0 flex-1 overflow-y-auto p-4 sm:p-8">
+        <h1 className="font-[Poppins,sans-serif] text-2xl font-semibold sm:text-3xl">{hello(data.me.name)}</h1>
         <p className="mt-1 text-sm text-[#51475B]">Keep learning. Your classes and your teacher are on this desk.</p>
         {notice && <p className="mt-4 rounded-xl bg-white px-3 py-2 text-sm">{notice}</p>}
 
@@ -195,6 +205,7 @@ export default function StudentDesk() {
       </section>
       </div>
     </div>
+    </DeskMenuProvider>
   );
 }
 

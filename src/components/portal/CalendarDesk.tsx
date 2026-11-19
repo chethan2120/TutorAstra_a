@@ -107,12 +107,12 @@ export default function CalendarDesk({ allowPeople = false }: { allowPeople?: bo
       </div>
 
       <div className="rounded-2xl border border-[#E8E2ED] bg-white p-4">
-        <div className="mb-3 flex items-center justify-between">
-          <button type="button" onClick={() => shift(-1)} className="rounded-lg border px-3 py-1 text-sm font-bold">Previous</button>
-          <p className="font-black text-[#310064]">{title}</p>
-          <button type="button" onClick={() => shift(1)} className="rounded-lg border px-3 py-1 text-sm font-bold">Next</button>
+        <div className="mb-3 flex items-center justify-between gap-2">
+          <button type="button" onClick={() => shift(-1)} className="shrink-0 rounded-lg border px-2 py-2 text-xs font-bold sm:px-3 sm:text-sm">Previous</button>
+          <p className="min-w-0 text-center text-sm font-black text-[#310064] sm:text-base">{title}</p>
+          <button type="button" onClick={() => shift(1)} className="shrink-0 rounded-lg border px-2 py-2 text-xs font-bold sm:px-3 sm:text-sm">Next</button>
         </div>
-        <div className="grid grid-cols-7 gap-1 text-center text-[11px] font-bold text-[#51475B]">
+        <div className="grid grid-cols-7 gap-1 text-center text-[10px] font-bold text-[#51475B] sm:text-[11px]">
           {WEEK.map((day) => <div key={day} className="py-1">{day}</div>)}
         </div>
         <div className="grid grid-cols-7 gap-1">
@@ -121,13 +121,14 @@ export default function CalendarDesk({ allowPeople = false }: { allowPeople?: bo
               key={cell.key}
               type="button"
               onClick={() => setSelected(cell.key)}
-              className={`min-h-20 rounded-lg border p-1 text-left text-xs ${selected === cell.key ? 'border-[#310064] bg-[#F5F0FA]' : 'border-[#F0ECEE] bg-white'}`}
+              className={`min-h-11 rounded-lg border p-0.5 text-left text-[11px] sm:min-h-20 sm:p-1 sm:text-xs ${selected === cell.key ? 'border-[#310064] bg-[#F5F0FA]' : 'border-[#F0ECEE] bg-white'}`}
             >
               <span className="font-bold">{cell.day}</span>
+              {cell.items.length > 0 && <span className="mx-auto mt-1 block h-1.5 w-1.5 rounded-full bg-[#310064] min-[420px]:hidden" />}
               {cell.items.slice(0, 2).map((item: any) => (
-                <span key={item.id} className="mt-1 block truncate rounded bg-[#310064] px-1 py-0.5 text-[10px] text-white">{item.subject_name}</span>
+                <span key={item.id} className="mt-1 hidden truncate rounded bg-[#310064] px-1 py-0.5 text-[10px] text-white min-[420px]:block">{item.subject_name}</span>
               ))}
-              {cell.items.length > 2 && <span className="mt-1 block text-[10px] text-[#51475B]">+{cell.items.length - 2} more</span>}
+              {cell.items.length > 2 && <span className="mt-1 hidden text-[10px] text-[#51475B] min-[420px]:block">+{cell.items.length - 2} more</span>}
             </button>
           ) : <div key={`blank-${index}`} />)}
         </div>

@@ -137,7 +137,7 @@ export default function ScheduleBoard() {
         <Field label="Reason">
           <input required value={move.reason} onChange={(event) => setMove({ ...move, reason: event.target.value })} className={control} />
         </Field>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <button className="rounded-lg bg-[#310064] px-4 py-2 text-sm font-bold text-white">Reschedule</button>
           <button type="button" onClick={cancel} className="rounded-lg border px-4 py-2 text-sm font-bold">Cancel this class</button>
         </div>

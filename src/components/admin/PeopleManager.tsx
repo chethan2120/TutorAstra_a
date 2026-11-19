@@ -92,7 +92,7 @@ export default function PeopleManager({ role, title }: { role: 'student' | 'teac
             <article key={person.id} className="rounded-2xl border border-[#E8E2ED] bg-white p-4 text-sm">
               <p className="font-bold text-[#310064]">{person.name}</p>
               <p className="text-[#51475B]">ID {accountCode(person.id)} · {person.role || (filter === 'teacher' ? 'teacher' : filter === 'student' ? 'student' : '')}</p>
-              <p>{person.email}</p>
+              <p className="break-all">{person.email}</p>
               <p>Number: {person.phone || 'Not added'}</p>
               <p>{person.is_active ? 'Active' : 'Deactivated'}</p>
               <div className="mt-2 flex flex-wrap gap-2">

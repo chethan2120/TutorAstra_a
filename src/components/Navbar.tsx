@@ -81,7 +81,7 @@ export default function Navbar(_props: NavbarProps = {}) {
         aria-label="Primary"
       >
         <Link href={onHome ? '#home' : '/'} className="shrink-0 rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#F4CC45]" aria-label="TutorAstra home">
-          <Logo showTagline={false} imageClassName={compact ? 'h-9 w-9' : 'h-10 w-10'} wordmarkClassName="text-lg font-bold sm:text-[1.25rem]" />
+          <Logo showTagline={false} imageClassName={compact ? 'h-9 w-9' : 'h-10 w-10'} wordmarkClassName="hidden text-lg font-bold min-[380px]:block sm:text-[1.25rem]" />
         </Link>
 
         <div className="hidden items-center gap-6 xl:flex">
@@ -128,7 +128,7 @@ export default function Navbar(_props: NavbarProps = {}) {
       </nav>
 
       {open && (
-        <div id="mobile-navigation" className="border-t border-[#310064]/10 bg-white xl:hidden">
+        <div id="mobile-navigation" className="max-h-[calc(100dvh-4.75rem)] overflow-y-auto border-t border-[#310064]/10 bg-white xl:hidden">
           <div className="mx-auto flex max-w-7xl flex-col gap-1 px-4 py-4 sm:px-6">
             <Link href="/" className="rounded-2xl px-3 py-3 text-base font-semibold text-[#310064] hover:bg-[#F0E9FA]" onClick={() => setOpen(false)}>
               Home

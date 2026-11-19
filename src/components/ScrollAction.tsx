@@ -68,7 +68,7 @@ export default function ScrollAction({ whatsappNumber = '' }: { whatsappNumber?:
 
       <div
         className="fixed bottom-5 right-4 z-40 flex flex-col items-end gap-3 sm:right-6"
-        style={{ position: 'fixed', bottom: '1.25rem', right: '1rem', zIndex: 40 }}
+        style={{ position: 'fixed', bottom: 'max(1.25rem, env(safe-area-inset-bottom))', right: 'max(1rem, env(safe-area-inset-right))', zIndex: 40 }}
       >
         {showScrollTop && (
           <button
