@@ -22,38 +22,49 @@ export default function ScrollAnimations() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    // Respect user's accessibility motion settings
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if (mediaQuery.matches) {
-      document.querySelectorAll('.scroll-reveal, .scroll-stagger-item, [data-reveal], .ta-rule, .ta-sweep-row').forEach((el) => {
-        el.classList.add('is-revealed', 'is-drawn');
+    const selector = '.scroll-reveal, .scroll-stagger-item, [data-reveal], .ta-rule, .ta-sweep-row';
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const mark = (el: Element) => {
+      el.setAttribute('data-revealed', '');
+      el.classList.add('is-revealed', 'is-drawn');
+    };
+
+    const inView = (el: Element) => {
+      const rect = el.getBoundingClientRect();
+      const view = window.innerHeight || document.documentElement.clientHeight;
+      return rect.width > 0 && rect.height > 0 && rect.bottom > 48 && rect.top < view - 24;
+    };
+
+    const scan = () => {
+      document.querySelectorAll(selector).forEach((el) => {
+        if (el.hasAttribute('data-revealed')) return;
+        if (reduce || inView(el)) mark(el);
       });
-      return;
-    }
+    };
 
-    // Set up high-performance IntersectionObserver
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-revealed', 'is-drawn');
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      {
-        root: null,
-        rootMargin: '0px 0px -8% 0px', // triggers just as element approaches visible area
-        threshold: 0.05,
-      }
-    );
+    let frame = 0;
+    const schedule = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
+        scan();
+      });
+    };
 
-    document.querySelectorAll<HTMLElement>('.scroll-reveal, [data-reveal], .ta-rule, .ta-sweep-row').forEach((element) => {
-      observer.observe(element);
-    });
+    scan();
+    const changes = new MutationObserver(schedule);
+    changes.observe(document.body, { childList: true, subtree: true });
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    const timers = [150, 600, 1400].map((ms) => window.setTimeout(scan, ms));
 
     return () => {
-      observer.disconnect();
+      changes.disconnect();
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+      timers.forEach((id) => window.clearTimeout(id));
+      if (frame) window.cancelAnimationFrame(frame);
     };
   }, [pathname]);
 
